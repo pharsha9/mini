@@ -13,7 +13,7 @@ def predict_disease(l):
     new_data_point = [symptoms]
     new_data_point = pd.DataFrame([symptoms], columns=diseases)
     prediction = model.predict(new_data_point)
-    return prediction[0:3]
+    return prediction[0]
 
 
 def main():
@@ -35,12 +35,11 @@ def main():
         if len(selected_symptoms) < 3:
             st.warning("Please select at least three symptoms to predict.")
         else:
-            diseasess = predict_disease(selected_symptoms)
-            for disease in diseasess:
-                image = f"static/{disease}.jpg".replace(" ", "")
-                st.image(image, caption=disease, use_column_width=True)
-                st.subheader("About")
-                st.write(disease_about.get(disease, "Information not available"))
+            disease = predict_disease(selected_symptoms)
+            image = f"static/{disease}.jpg".replace(" ", "")
+            st.image(image, caption=disease, use_column_width=True)
+            st.subheader("About")
+            st.write(disease_about.get(disease, "Information not available"))
 
 
 if __name__ == "__main__":
