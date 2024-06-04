@@ -35,8 +35,8 @@ def main():
         if len(selected_symptoms) < 3:
             st.warning("Please select at least three symptoms to predict.")
         else:
-            diseases = predict_disease(selected_symptoms)
-            for disease in diseases:
+            diseasess = predict_disease(selected_symptoms)
+            for disease in diseasess:
                 image = f"static/{disease}.jpg".replace(" ", "")
                 st.image(image, caption=disease, use_column_width=True)
                 st.subheader("About")
