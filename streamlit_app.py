@@ -80,6 +80,8 @@ def main():
             background-color: white;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             z-index: 1000;
+            padding: 10px;
+            display: none;
         }
         </style>
         """,
@@ -89,26 +91,47 @@ def main():
     if "chat_visible" not in st.session_state:
         st.session_state.chat_visible = False
 
-    if st.button("💬", key="chat_button", help="Chat with the assistant", className="chat-button"):
+    if st.button("💬", key="chat_button", help="Chat with the assistant", use_container_width=True):
         st.session_state.chat_visible = not st.session_state.chat_visible
 
     if st.session_state.chat_visible:
-        with st.sidebar:
-            st.header("Chatbot")
-            st.write("Chat with our assistant to get help with disease predictions.")
-            
-            if "messages" not in st.session_state:
-                st.session_state.messages = []
+        st.markdown(
+            """
+            <script>
+            document.querySelector('.chat-window').style.display = 'block';
+            </script>
+            """,
+            unsafe_allow_html=True
+        )
+    else:
+        st.markdown(
+            """
+            <script>
+            document.querySelector('.chat-window').style.display = 'none';
+            </script>
+            """,
+            unsafe_allow_html=True
+        )
 
-            user_input = st.text_input("You: ", "")
-            if st.button("Send"):
-                if user_input:
-                    st.session_state.messages.append({"message": user_input, "is_user": True})
-                    response = generate_response(user_input)
-                    st.session_state.messages.append({"message": response, "is_user": False})
+    if st.session_state.chat_visible:
+        st.markdown('<div class="chat-window">', unsafe_allow_html=True)
+        st.header("Chatbot")
+        st.write("Chat with our assistant to get help with disease predictions.")
+        
+        if "messages" not in st.session_state:
+            st.session_state.messages = []
 
-            for msg in st.session_state.messages:
-                st_message(**msg)
+        user_input = st.text_input("You: ", key="chat_input")
+        if st.button("Send", key="chat_send"):
+            if user_input:
+                st.session_state.messages.append({"message": user_input, "is_user": True})
+                response = generate_response(user_input)
+                st.session_state.messages.append({"message": response, "is_user": False})
+
+        for msg in st.session_state.messages:
+            st_message(**msg)
+
+        st.markdown('</div>', unsafe_allow_html=True)
 
 if __name__ == "__main__":
     dataframe1 = pd.read_csv("training_data.csv")
