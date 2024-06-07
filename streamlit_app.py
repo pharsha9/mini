@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import joblib
 
-
 def predict_disease(l):
     d = {}
     for i in diseases:
@@ -10,11 +9,12 @@ def predict_disease(l):
     for i in l:
         d[i] = 1
     symptoms = list(d.values())
-    new_data_point = [symptoms]
     new_data_point = pd.DataFrame([symptoms], columns=diseases)
-    prediction = model.predict(new_data_point)
-    return prediction[0]
-
+    probabilities = model.predict_proba(new_data_point)[0]
+    top3_indices = probabilities.argsort()[-3:][::-1]
+    top3_diseases = [model.classes_[i] for i in top3_indices]
+    top3_probabilities = [probabilities[i] for i in top3_indices]
+    return list(zip(top3_diseases, top3_probabilities))
 
 def main():
     st.title("Disease Predictor")
@@ -35,12 +35,12 @@ def main():
         if len(selected_symptoms) < 3:
             st.warning("Please select at least three symptoms to predict.")
         else:
-            disease = predict_disease(selected_symptoms)
-            image = f"static/{disease}.jpg".replace(" ", "")
-            st.image(image, caption=disease, use_column_width=True)
-            st.subheader("About")
-            st.write(disease_about.get(disease, "Information not available"))
-
+            predictions = predict_disease(selected_symptoms)
+            for disease, probability in predictions:
+                image = f"static/{disease}.jpg".replace(" ", "")
+                st.image(image, caption=f"{disease} ({probability*100:.2f}% probability)", use_column_width=True)
+                st.subheader(disease)
+                st.write(disease_about.get(disease, "Information not available"))
 
 if __name__ == "__main__":
     dataframe1 = pd.read_csv("training_data.csv")
