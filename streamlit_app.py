@@ -6,7 +6,7 @@ import os
 
 # Define disease information
 disease_info = {
-    "Vertigo": {
+    "Benign Paroxysmal Positional Vertigo": {
         "precautions": "Avoid sudden head movements. Sleep with your head slightly elevated. Be careful when lying down or getting up.",
         "actions": "Perform Epley maneuvers to reposition ear crystals. Consult a doctor for medication if symptoms persist. Stay hydrated and avoid caffeine and alcohol."
     },
@@ -66,8 +66,112 @@ disease_info = {
         "precautions": "Inform healthcare providers of any known drug allergies. Read medication labels carefully. Monitor for any signs of adverse reactions.",
         "actions": "Discontinue the drug and seek medical attention immediately. Follow the treatment plan provided by your healthcare provider. Consider alternative medications if necessary."
     },
-    # Add more diseases as needed
+    "Fungal Infection": {
+        "precautions": "Keep affected areas clean and dry. Avoid sharing personal items like towels and razors. Wear breathable, loose-fitting clothing.",
+        "actions": "Use antifungal creams or medications as prescribed. Maintain good hygiene practices. Consult a doctor if the infection persists or worsens."
+    },
+    "Gastroenteritis": {
+        "precautions": "Practice good hand hygiene to prevent the spread of infection. Avoid consuming contaminated food or water. Ensure proper food handling and preparation.",
+        "actions": "Stay hydrated by drinking plenty of fluids. Rest and avoid solid foods until symptoms improve. Consult a doctor if symptoms are severe or prolonged."
+    },
+    "GERD": {
+        "precautions": "Avoid foods and beverages that trigger symptoms. Eat smaller, more frequent meals. Avoid lying down immediately after eating.",
+        "actions": "Take antacids or other medications as prescribed. Elevate the head of your bed to reduce nighttime symptoms. Consult a gastroenterologist for further evaluation and treatment."
+    },
+    "Heart Attack": {
+        "precautions": "Maintain a healthy diet and exercise regularly. Avoid smoking and limit alcohol consumption. Monitor and manage blood pressure and cholesterol levels.",
+        "actions": "Seek emergency medical help immediately if experiencing symptoms. Take prescribed medications and follow the treatment plan. Participate in cardiac rehabilitation programs."
+    },
+    "Hepatitis A": {
+        "precautions": "Get vaccinated against hepatitis A. Practice good hand hygiene, especially before eating. Avoid consuming contaminated food or water.",
+        "actions": "Rest and avoid alcohol to reduce liver strain. Follow a healthy diet and stay hydrated. Consult a doctor for further evaluation and treatment."
+    },
+    "Hepatitis B": {
+        "precautions": "Get vaccinated against hepatitis B. Practice safe sex and avoid sharing needles. Ensure proper sterilization of medical equipment.",
+        "actions": "Take antiviral medications as prescribed. Monitor liver function regularly. Consult a hepatologist for ongoing management."
+    },
+    "Hepatitis C": {
+        "precautions": "Avoid sharing needles and personal items. Practice safe sex. Ensure proper sterilization of medical equipment.",
+        "actions": "Take antiviral medications as prescribed. Monitor liver function regularly. Consult a hepatologist for ongoing management."
+    },
+    "Hepatitis D": {
+        "precautions": "Get vaccinated against hepatitis B to prevent co-infection. Avoid sharing needles and personal items. Practice safe sex.",
+        "actions": "Take antiviral medications as prescribed. Monitor liver function regularly. Consult a hepatologist for ongoing management."
+    },
+    "Hepatitis E": {
+        "precautions": "Ensure proper sanitation and hygiene practices. Avoid consuming contaminated food or water. Practice good hand hygiene.",
+        "actions": "Rest and avoid alcohol to reduce liver strain. Follow a healthy diet and stay hydrated. Consult a doctor for further evaluation and treatment."
+    },
+    "Hypertension": {
+        "precautions": "Maintain a healthy diet low in salt and saturated fats. Exercise regularly and maintain a healthy weight. Monitor blood pressure regularly.",
+        "actions": "Take antihypertensive medications as prescribed. Reduce stress through relaxation techniques. Consult a doctor for regular check-ups and management."
+    },
+    "Hyperthyroidism": {
+        "precautions": "Avoid iodine-rich foods if advised by your doctor. Monitor thyroid hormone levels regularly. Manage stress through relaxation techniques.",
+        "actions": "Take antithyroid medications as prescribed. Consider radioactive iodine therapy or surgery if recommended. Consult an endocrinologist for ongoing management."
+    },
+    "Hypoglycemia": {
+        "precautions": "Monitor blood glucose levels regularly. Eat regular meals and snacks to maintain stable blood sugar levels. Avoid excessive alcohol consumption.",
+        "actions": "Consume fast-acting carbohydrates like glucose tablets or juice if experiencing symptoms. Seek medical help if symptoms persist or worsen. Consult a doctor for proper management."
+    },
+    "Hypothyroidism": {
+        "precautions": "Take thyroid hormone replacement medication as prescribed. Monitor thyroid hormone levels regularly. Maintain a balanced diet and exercise regularly.",
+        "actions": "Follow the prescribed treatment plan. Consult an endocrinologist for regular check-ups. Manage symptoms through a healthy lifestyle."
+    },
+    "Impetigo": {
+        "precautions": "Maintain good personal hygiene. Avoid close contact with infected individuals. Keep wounds clean and covered.",
+        "actions": "Use prescribed antibiotics to treat the infection. Keep affected areas clean and dry. Consult a doctor if the infection spreads or worsens."
+    },
+    "Jaundice": {
+        "precautions": "Avoid alcohol and hepatotoxic drugs. Maintain a healthy diet to support liver function. Monitor liver function regularly.",
+        "actions": "Seek medical evaluation to determine the underlying cause. Follow the prescribed treatment plan. Stay hydrated and rest."
+    },
+    "Malaria": {
+        "precautions": "Avoid mosquito bites by using repellents and wearing protective clothing. Use mosquito nets and screens in living areas. Take antimalarial medications if traveling to high-risk areas.",
+        "actions": "Seek medical help immediately if experiencing symptoms. Take prescribed antimalarial medications. Follow the treatment plan and complete the full course of medication."
+    },
+    "Migraine": {
+        "precautions": "Identify and avoid known triggers. Maintain a regular sleep schedule and stay hydrated. Manage stress through relaxation techniques.",
+        "actions": "Take prescribed medications to alleviate symptoms. Rest in a dark, quiet room during an attack. Consult a doctor for ongoing management and preventive treatments."
+    },
+    "Osteoarthritis": {
+        "precautions": "Maintain a healthy weight to reduce joint stress. Stay active with low-impact exercises. Avoid repetitive joint strain.",
+        "actions": "Take pain relievers and anti-inflammatory medications as prescribed. Engage in physical therapy to improve joint function. Apply hot or cold compresses to affected joints."
+    },
+    "Paralysis (Brain Hemorrhage)": {
+        "precautions": "Manage risk factors such as hypertension and diabetes. Avoid smoking and excessive alcohol consumption. Follow a healthy lifestyle to reduce stroke risk.",
+        "actions": "Seek immediate medical help if experiencing symptoms. Follow a rehabilitation program to regain function. Consult a neurologist for ongoing management."
+    },
+    "Peptic Ulcer Disease": {
+        "precautions": "Avoid NSAIDs and aspirin. Limit alcohol consumption and avoid smoking. Eat a balanced diet and avoid spicy foods.",
+        "actions": "Take prescribed medications to reduce stomach acid. Follow a healthy diet and avoid trigger foods. Consult a gastroenterologist for ongoing management."
+    },
+    "Pneumonia": {
+        "precautions": "Practice good hand hygiene to prevent infection. Get vaccinated against pneumococcal pneumonia and flu. Avoid close contact with sick individuals.",
+        "actions": "Take prescribed antibiotics to treat bacterial pneumonia. Rest and stay hydrated. Follow the treatment plan and seek medical help if symptoms worsen."
+    },
+    "Psoriasis": {
+        "precautions": "Keep skin moisturized and avoid triggers. Use gentle skin care products. Avoid excessive sun exposure.",
+        "actions": "Use prescribed topical treatments to manage symptoms. Consider phototherapy or systemic medications if needed. Consult a dermatologist for ongoing management."
+    },
+    "Tuberculosis": {
+        "precautions": "Avoid close contact with individuals with active TB. Practice good respiratory hygiene. Ensure proper ventilation in living areas.",
+        "actions": "Take prescribed medications for the full course of treatment. Follow the treatment plan and attend regular check-ups. Consult a doctor for ongoing management."
+    },
+    "Typhoid": {
+        "precautions": "Practice good hand hygiene and avoid contaminated food and water. Get vaccinated if traveling to high-risk areas. Ensure proper sanitation and hygiene practices.",
+        "actions": "Take prescribed antibiotics to treat the infection. Stay hydrated and rest. Follow the treatment plan and seek medical help if symptoms worsen."
+    },
+    "Urinary Tract Infection": {
+        "precautions": "Maintain good personal hygiene. Stay hydrated and urinate regularly. Avoid irritants like harsh soaps and douches.",
+        "actions": "Take prescribed antibiotics to treat the infection. Drink plenty of fluids to flush out bacteria. Consult a doctor if symptoms persist or worsen."
+    },
+    "Varicose Veins": {
+        "precautions": "Avoid prolonged standing or sitting. Maintain a healthy weight and exercise regularly. Elevate legs to reduce pressure.",
+        "actions": "Wear compression stockings to improve circulation. Follow a healthy lifestyle to manage symptoms. Consult a doctor for advanced treatments if needed."
+    }
 }
+
 
 def predict_disease(l):
     d = {symptom: 0 for symptom in symptoms_list}
@@ -177,25 +281,13 @@ def main():
             unsafe_allow_html=True
         )
 
-    if st.session_state.chat_visible:
-        st.markdown('<div class="chat-window">', unsafe_allow_html=True)
-        st.header("Chatbot")
-        st.write("Chat with our assistant to get help with disease predictions.")
-        
-        if "messages" not in st.session_state:
-            st.session_state.messages = []
+    st.text_area("User Input", key="user_input")
+    if st.button("Send", key="send_button"):
+        user_input = st.session_state.user_input
+        response = generate_response(user_input)
+        st_message("user", user_input, key="user_message")
+        st_message("bot", response, key="bot_response")
 
-        user_input = st.text_input("You: ", key="chat_input")
-        if st.button("Send", key="chat_send"):
-            if user_input:
-                st.session_state.messages.append({"message": user_input, "is_user": True})
-                response = generate_response(user_input)
-                st.session_state.messages.append({"message": response, "is_user": False})
-
-        for msg in st.session_state.messages:
-            st_message(**msg)
-
-        st.markdown('</div>', unsafe_allow_html=True)
 
 if __name__ == "__main__":
     dataframe1 = pd.read_csv("training_data.csv")
