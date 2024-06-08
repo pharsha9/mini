@@ -3,6 +3,7 @@ import pandas as pd
 import joblib
 from streamlit_chat import message as st_message
 import os
+import time
 
 # Define disease information
 disease_info = {
@@ -296,7 +297,7 @@ def main():
                 st.session_state.messages.append({"message": response, "is_user": False})
 
         for msg in st.session_state.messages:
-            st_message(**msg)
+            st_message(**msg+"_"+str(time.time()))
 
         st.markdown('</div>', unsafe_allow_html=True)
 
