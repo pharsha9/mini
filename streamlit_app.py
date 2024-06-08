@@ -172,7 +172,6 @@ disease_info = {
     }
 }
 
-
 def predict_disease(l):
     d = {symptom: 0 for symptom in symptoms_list}
     for symptom in l:
@@ -281,12 +280,25 @@ def main():
             unsafe_allow_html=True
         )
 
-    st.text_area("User Input", key="user_input")
-    if st.button("Send", key="send_button"):
-        user_input = st.session_state.user_input
-        response = generate_response(user_input)
-        st_message("user", user_input, key="user_message")
-        st_message("bot", response, key="bot_response")
+    if st.session_state.chat_visible:
+        st.markdown('<div class="chat-window">', unsafe_allow_html=True)
+        st.header("Chatbot")
+        st.write("Chat with our assistant to get help with disease predictions.")
+        
+        if "messages" not in st.session_state:
+            st.session_state.messages = []
+
+        user_input = st.text_input("You: ", key="chat_input")
+        if st.button("Send", key="chat_send"):
+            if user_input:
+                st.session_state.messages.append({"message": user_input, "is_user": True})
+                response = generate_response(user_input)
+                st.session_state.messages.append({"message": response, "is_user": False})
+
+        for msg in st.session_state.messages:
+            st_message(**msg)
+
+        st.markdown('</div>', unsafe_allow_html=True)
 
 if __name__ == "__main__":
     dataframe1 = pd.read_csv("training_data.csv")
