@@ -2,15 +2,13 @@ import streamlit as st
 import pandas as pd
 import joblib
 from streamlit_chat import message as st_message
+import os
 
 def predict_disease(l):
-    d = {}
-    for i in diseases:
-        d[i] = 0
-    for i in l:
-        d[i] = 1
-    symptoms = list(d.values())
-    new_data_point = pd.DataFrame([symptoms], columns=diseases)
+    d = {symptom: 0 for symptom in symptoms_list}
+    for symptom in l:
+        d[symptom] = 1
+    new_data_point = pd.DataFrame([d])
     probabilities = model.predict_proba(new_data_point)[0]
     top3_indices = probabilities.argsort()[-3:][::-1]
     top3_diseases = [model.classes_[i] for i in top3_indices]
@@ -18,7 +16,6 @@ def predict_disease(l):
     return list(zip(top3_diseases, top3_probabilities))
 
 def generate_response(user_input):
-    # Simple example response logic, can be replaced with a more sophisticated chatbot logic
     if "predict" in user_input.lower():
         return "Please select your symptoms from the 'Predict' page."
     else:
@@ -39,18 +36,18 @@ def main():
     elif page == "Predict":
         st.header("Predict Disease")
         st.write("Please select the symptoms:")
-        selected_symptoms = st.multiselect("Symptoms", diseases)
+        selected_symptoms = st.multiselect("Symptoms", symptoms_list)
         if len(selected_symptoms) < 3:
             st.warning("Please select at least three symptoms to predict.")
         else:
             predictions = predict_disease(selected_symptoms)
             for disease, probability in predictions:
-                image = f"static/{disease}.jpg".replace(" ", "")
-                st.image(image, caption=f"{disease} ({probability*100:.2f}% probability)", use_column_width=True)
+                image_path = f"static/{disease}.jpg".replace(" ", "")
+                if os.path.exists(image_path):
+                    st.image(image_path, caption=f"{disease} ({probability*100:.2f}% probability)", use_column_width=True)
                 st.subheader(disease)
                 st.write(disease_about.get(disease, "Information not available"))
 
-    # Chatbot icon and chat interface
     st.markdown(
         """
         <style>
@@ -91,7 +88,7 @@ def main():
     if "chat_visible" not in st.session_state:
         st.session_state.chat_visible = False
 
-    if st.button("💬", key="chat_button", help="Chat with the assistant", use_container_width=True):
+    if st.button("💬", key="chat_button", help="Chat with the assistant"):
         st.session_state.chat_visible = not st.session_state.chat_visible
 
     if st.session_state.chat_visible:
@@ -135,7 +132,7 @@ def main():
 
 if __name__ == "__main__":
     dataframe1 = pd.read_csv("training_data.csv")
-    diseases = list(dataframe1.columns)[:-2]
+    symptoms_list = list(dataframe1.columns)[:-2]
     disease_about = (
         pd.read_excel("dis_info.xlsx").set_index("disease").to_dict()["about"]
     )
