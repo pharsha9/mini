@@ -1,11 +1,7 @@
-import requests
 import streamlit as st
 import pandas as pd
 import joblib
-
-# Ollama API details
-OLLAMA_API_URL = "https://api.ollama.ai/v1/chat"  # Replace with your actual API URL
-OLLAMA_API_KEY = "your-ollama-api-key"  # Replace with your actual API key
+from streamlit_chat import message as st_message
 
 def predict_disease(l):
     d = {}
@@ -22,20 +18,11 @@ def predict_disease(l):
     return list(zip(top3_diseases, top3_probabilities))
 
 def generate_response(user_input):
-    headers = {
-        "Authorization": f"Bearer {OLLAMA_API_KEY}",
-        "Content-Type": "application/json"
-    }
-    data = {
-        "model": "gpt-3.5-turbo",  # Replace with the appropriate model name if different
-        "prompt": user_input,
-        "max_tokens": 150
-    }
-    response = requests.post(OLLAMA_API_URL, headers=headers, json=data)
-    if response.status_code == 200:
-        return response.json()['choices'][0]['message']['content'].strip()
+    # Simple example response logic, can be replaced with a more sophisticated chatbot logic
+    if "predict" in user_input.lower():
+        return "Please select your symptoms from the 'Predict' page."
     else:
-        return "Sorry, I couldn't process that. Please try again."
+        return "I'm here to help with your disease prediction queries. How can I assist you?"
 
 def main():
     st.title("Disease Predictor")
@@ -104,9 +91,7 @@ def main():
     if "chat_visible" not in st.session_state:
         st.session_state.chat_visible = False
 
-    chat_button_clicked = st.button("💬", key="chat_button", help="Chat with the assistant")
-
-    if chat_button_clicked:
+    if st.button("💬", key="chat_button", help="Chat with the assistant", use_container_width=True):
         st.session_state.chat_visible = not st.session_state.chat_visible
 
     if st.session_state.chat_visible:
