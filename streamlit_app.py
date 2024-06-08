@@ -1,6 +1,11 @@
+import requests
 import streamlit as st
 import pandas as pd
 import joblib
+
+# Ollama API details
+OLLAMA_API_URL = "https://api.ollama.ai/v1/chat"  # Replace with your actual API URL
+OLLAMA_API_KEY = "your-ollama-api-key"  # Replace with your actual API key
 
 def predict_disease(l):
     d = {}
@@ -15,6 +20,22 @@ def predict_disease(l):
     top3_diseases = [model.classes_[i] for i in top3_indices]
     top3_probabilities = [probabilities[i] for i in top3_indices]
     return list(zip(top3_diseases, top3_probabilities))
+
+def generate_response(user_input):
+    headers = {
+        "Authorization": f"Bearer {OLLAMA_API_KEY}",
+        "Content-Type": "application/json"
+    }
+    data = {
+        "model": "gpt-3.5-turbo",  # Replace with the appropriate model name if different
+        "prompt": user_input,
+        "max_tokens": 150
+    }
+    response = requests.post(OLLAMA_API_URL, headers=headers, json=data)
+    if response.status_code == 200:
+        return response.json()['choices'][0]['message']['content'].strip()
+    else:
+        return "Sorry, I couldn't process that. Please try again."
 
 def main():
     st.title("Disease Predictor")
@@ -41,6 +62,91 @@ def main():
                 st.image(image, caption=f"{disease} ({probability*100:.2f}% probability)", use_column_width=True)
                 st.subheader(disease)
                 st.write(disease_about.get(disease, "Information not available"))
+
+    # Chatbot icon and chat interface
+    st.markdown(
+        """
+        <style>
+        .chat-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            text-align: center;
+            cursor: pointer;
+            z-index: 1000;
+        }
+        .chat-window {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 300px;
+            height: 400px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            padding: 10px;
+            display: none;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
+    if "chat_visible" not in st.session_state:
+        st.session_state.chat_visible = False
+
+    chat_button_clicked = st.button("💬", key="chat_button", help="Chat with the assistant")
+
+    if chat_button_clicked:
+        st.session_state.chat_visible = not st.session_state.chat_visible
+
+    if st.session_state.chat_visible:
+        st.markdown(
+            """
+            <script>
+            document.querySelector('.chat-window').style.display = 'block';
+            </script>
+            """,
+            unsafe_allow_html=True
+        )
+    else:
+        st.markdown(
+            """
+            <script>
+            document.querySelector('.chat-window').style.display = 'none';
+            </script>
+            """,
+            unsafe_allow_html=True
+        )
+
+    if st.session_state.chat_visible:
+        st.markdown('<div class="chat-window">', unsafe_allow_html=True)
+        st.header("Chatbot")
+        st.write("Chat with our assistant to get help with disease predictions.")
+        
+        if "messages" not in st.session_state:
+            st.session_state.messages = []
+
+        user_input = st.text_input("You: ", key="chat_input")
+        if st.button("Send", key="chat_send"):
+            if user_input:
+                st.session_state.messages.append({"message": user_input, "is_user": True})
+                response = generate_response(user_input)
+                st.session_state.messages.append({"message": response, "is_user": False})
+
+        for msg in st.session_state.messages:
+            st_message(**msg)
+
+        st.markdown('</div>', unsafe_allow_html=True)
 
 if __name__ == "__main__":
     dataframe1 = pd.read_csv("training_data.csv")
