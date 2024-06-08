@@ -256,7 +256,7 @@ def main():
         unsafe_allow_html=True
     )
 
-        if "chat_visible" not in st.session_state:
+    if "chat_visible" not in st.session_state:
         st.session_state.chat_visible = False
 
     if st.button("💬", key="chat_button", help="Chat with the assistant"):
