@@ -297,7 +297,7 @@ def main():
                 st.session_state.messages.append({"message": response, "is_user": False})
 
         for msg in st.session_state.messages:
-            st_message(**msg+"_"+str(time.time()))
+            st_message(**msg)
 
         st.markdown('</div>', unsafe_allow_html=True)
 
