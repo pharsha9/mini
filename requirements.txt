@@ -43,6 +43,7 @@ streamlit==1.32.2
 streamlit-chat==0.1.1
 tenacity==8.2.3
 threadpoolctl==3.3.0
+time
 toml==0.10.2
 toolz==0.12.1
 tornado==6.4
