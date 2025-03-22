@@ -23,25 +23,8 @@ def generate_response(gemini_model, user_input):
     if not gemini_model:
         return "Gemini is not initialized.  Please check the API key in the code."
 
-    # Define the prompt
-    prompt = f"""
-    You are a helpful medical assistant.
-    Your primary goal is to provide information about diseases, symptoms, precautions, and preventive measures.
-
-    When responding to questions about a specific disease, always include the following if possible:
-
-    *  A brief overview of the disease.
-    *  Common symptoms associated with the disease.
-    *  Practical precautions individuals can take to avoid contracting the disease.
-    *  Preventive measures, such as lifestyle changes or vaccinations, that can reduce the risk of the disease.
-
-    If a user asks a question that is not related to diseases, symptoms, precautions, or preventive measures, respond with: "I am only able to provide information related to health and well-being."
-
-    Here is the user's question: {user_input}
-    """
-
     try:
-        response = gemini_model.generate_content(prompt)
+        response = gemini_model.generate_content(user_input)
         return response.text
     except Exception as e:
         return f"Error generating response: {e}"
@@ -161,15 +144,18 @@ def main():
         if "messages" not in st.session_state:
             st.session_state.messages = []
 
-        user_input = st.text_input("You: ", key="chat_input")
-        if st.button("Send", key="chat_send"):
+        # Use a unique key for the text input each time
+        user_input = st.text_input("You: ", key=f"chat_input_{len(st.session_state.messages)}")  # Unique key
+
+        if st.button("Send", key=f"chat_send_{len(st.session_state.messages)}"): # unique key for the button
             if user_input:
                 st.session_state.messages.append({"message": user_input, "is_user": True})
                 response = generate_response(gemini_model, user_input)
                 st.session_state.messages.append({"message": response, "is_user": False})
 
-        for msg in st.session_state.messages:
-            st_message(**msg)
+        # Display messages using a unique key for each message
+        for i, msg in enumerate(st.session_state.messages):
+            st_message(**msg, key=f"msg_{i}") # Unique key for each message
 
         st.markdown('</div>', unsafe_allow_html=True)
 
