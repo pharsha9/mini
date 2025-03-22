@@ -23,8 +23,21 @@ def generate_response(gemini_model, user_input):
     if not gemini_model:
         return "Gemini is not initialized.  Please check the API key in the code."
 
+    # PROMPT ENGINEERING:  This is the key addition.
+    prompt = f"""You are a helpful and informative AI assistant specializing in health-related topics.
+    You should ONLY provide information related to diseases, symptoms, prevention, and general health advice.
+    If the user asks a question that is not related to health, politely decline to answer.
+
+    When a user asks about a specific disease, provide information about:
+    - Precautions they can take.
+    - Preventive measures they can take.
+    - General information about the disease.
+
+    User question: {user_input}
+    """
+
     try:
-        response = gemini_model.generate_content(user_input)
+        response = gemini_model.generate_content(prompt)
         return response.text
     except Exception as e:
         return f"Error generating response: {e}"
