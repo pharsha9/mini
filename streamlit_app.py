@@ -23,8 +23,25 @@ def generate_response(gemini_model, user_input):
     if not gemini_model:
         return "Gemini is not initialized.  Please check the API key in the code."
 
+    # Define the prompt
+    prompt = f"""
+    You are a helpful medical assistant.
+    Your primary goal is to provide information about diseases, symptoms, precautions, and preventive measures.
+
+    When responding to questions about a specific disease, always include the following if possible:
+
+    *  A brief overview of the disease.
+    *  Common symptoms associated with the disease.
+    *  Practical precautions individuals can take to avoid contracting the disease.
+    *  Preventive measures, such as lifestyle changes or vaccinations, that can reduce the risk of the disease.
+
+    If a user asks a question that is not related to diseases, symptoms, precautions, or preventive measures, respond with: "I am only able to provide information related to health and well-being."
+
+    Here is the user's question: {user_input}
+    """
+
     try:
-        response = gemini_model.generate_content(user_input)
+        response = gemini_model.generate_content(prompt)
         return response.text
     except Exception as e:
         return f"Error generating response: {e}"
