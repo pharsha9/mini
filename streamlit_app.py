@@ -13,7 +13,7 @@ GEMINI_API_KEY = "AIzaSyBb14-qC2cEIwn8UG0No6Cno8_99p7TDxA"  # Replace with your 
 def initialize_gemini():
     try:
         genai.configure(api_key=GEMINI_API_KEY)
-        model = genai.GenerativeModel('gemini-pro')
+        model = genai.GenerativeModel('gemini-2.0-flash')
         return model
     except Exception as e:
         st.error(f"Error initializing Gemini: {e}.  Check your API key.")
